@@ -2,11 +2,9 @@ package project;
 
 public class Passenger {
 	public int id;
-	public Train train;
 	
-	public Passenger(int id, Train train) {
+	public Passenger(int id) {
 		this.id = id;
-		this.train = train;
 	}
 	
 }
