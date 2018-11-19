@@ -68,6 +68,7 @@ public class Station extends Thread {
 			addTrainInPlatform();
 			// si un train est plein on le fait partir
 			checkTrain();
+			//jhfj
 			
 			
 		}
