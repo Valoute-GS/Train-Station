@@ -45,7 +45,9 @@ public class Station extends Thread {
 			Train tmp = platforms[p];
 			if(tmp != null && tmp.flushed){
 				if(tmp.freeSeats == 0){ // si le train et plein il va a sa destination
-					tmp.destination.addTrainInQueue(tmp);
+
+					tmp.nextDestination(); // mise a jour de la prochaine destination
+					tmp.nextStation.addTrainInQueue(tmp);
 					tmp.flushed = false;
 					platforms[p] = null;
 										
@@ -60,7 +62,7 @@ public class Station extends Thread {
 			if(t==null){
 				s += " \n	VIDE | ";
 			}else{
-				s += "\n 	Train : " + t.id + " - FS : " + t.freeSeats +" | ";
+				s += "\n 	Train : " + t.id + " - FS : " + t.freeSeats +" | " ;
 			}
 		}
 		return "\n\nGare : " + name + " => " + s;

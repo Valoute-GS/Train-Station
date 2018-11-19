@@ -2,9 +2,7 @@ package project;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 public class TrainSimulation {
 
@@ -13,11 +11,26 @@ public class TrainSimulation {
 		// Aviable train stations
 		Station A = new Station("A", 4);
 		Station B = new Station("B", 2);
+		Station C = new Station("C", 2);
+		
+		// Trains itinéraires
+		LinkedList<Station> p001 = new LinkedList<Station>();
+		p001.add(A);
+		p001.add(B);
+		p001.add(C);
+		p001.add(A);
+		p001.add(C);
+		LinkedList<Station> p002 = new LinkedList<Station>();
+		p002.add(A);
+		p002.add(B);
+		LinkedList<Station> p003 = new LinkedList<Station>();
+		p003.add(A);
+		p003.add(C);
 		
 		// Trains
-		Train t001 = new Train(1, 10, B);
-		Train t002 = new Train(2, 10, B);
-		Train t003 = new Train(3, 10, B);
+		Train t001 = new Train(1, 100, p001);
+		Train t002 = new Train(2, 10, p002);
+		Train t003 = new Train(3, 10, p003);
 		
 		List<Train> allTrain = new LinkedList<Train>();
 		allTrain.add(t001);
@@ -30,7 +43,7 @@ public class TrainSimulation {
 		TicketOffice ticketOfficeA = new TicketOffice(A);
 		
 		// Passengers
-		Queue <Passenger> passengers = new LinkedList<Passenger>();
+		//Queue <Passenger> passengers = new LinkedList<Passenger>();
 
 
 		t001.start();
@@ -38,6 +51,7 @@ public class TrainSimulation {
 		t003.start();
 		A.start();
 		B.start();
+		C.start();
 		ticketOfficeA.start();
 		
 		
@@ -51,13 +65,14 @@ public class TrainSimulation {
 		int i = 0;
 		while(true){
 
-			sleep.millis(1000);
+			sleep.millis(500);
 			t001.reserveSeat();
 			int r = new Random().nextInt(3);
 			ticketOfficeA.createPassenger(i, allTrain.get(r));
 
 			System.out.println(A.toString());
 			System.out.println(B.toString());
+			System.out.println(C.toString());
 			
 			i++;
 		}
