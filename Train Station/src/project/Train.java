@@ -27,7 +27,6 @@ public class Train extends Thread{
 	}
 
 	public void leave(){
-
 	}
 
 	public boolean reserveSeat() {

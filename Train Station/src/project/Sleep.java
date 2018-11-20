@@ -2,7 +2,7 @@ package project;
 
 import java.util.concurrent.TimeUnit;
 
-public class sleep {
+public class Sleep {
 	
 	public static void millis(int i){
 		try {
