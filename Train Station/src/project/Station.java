@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Station extends Thread {
-	public String name;
+	private String name;
 	private int capacity; //max nb of trains at the same time
 
 	private Train[] platforms;
@@ -33,8 +33,12 @@ public class Station extends Thread {
 				
 			}
 			// On vide les trains a vider
-			if(platforms[p] != null && !platforms[p].flushed){
-				platforms[p].flush();;				
+			if(platforms[p] != null && !platforms[p].isFlushed()){
+				platforms[p].flush();
+				
+				if(platforms[p].isOver()){
+					platforms[p] = null;
+				}
 			}
 		}
 
@@ -43,12 +47,12 @@ public class Station extends Thread {
 	private void checkTrain(){
 		for(int p = 0; p < capacity; p++){ //on check chaque platform
 			Train tmp = platforms[p];
-			if(tmp != null && tmp.flushed){
-				if(tmp.freeSeats == 0){ // si le train et plein il va a sa destination
+			if(tmp != null && tmp.isFlushed()){
+				if(tmp.getFreeSeats() == 0){ // si le train et plein il va a sa destination
 
 					tmp.nextDestination(); // mise a jour de la prochaine destination
-					tmp.nextStation.addTrainInQueue(tmp);
-					tmp.flushed = false;
+					tmp.getCurrentStation().addTrainInQueue(tmp);
+					tmp.setFlushed(false);
 					platforms[p] = null;
 										
 				}
@@ -60,20 +64,23 @@ public class Station extends Thread {
 		String s = "";
 		for(Train t : platforms){
 			if(t==null){
-				s += " \n	VIDE | ";
+				s += " \n	EMPTY | ";
 			}else{
-				s += "\n 	Train : " + t.id + " - FS : " + t.freeSeats +" | " ;
+				s += t.toString();
 			}
 		}
-		return "\n\nGare : " + name + " => " + s;
+		return "\n\nStation : " + name + " => " + s;
 	}
 
+	public String getStationName(){
+		return this.name;
+	}
 	
 	@Override
-	public void run(){
+ 	public void run(){
 		while(true){
-			sleep.millis(10);
-			
+			Sleep.millis(10);
+			//System.out.println(this.toString());
 			// REGROUPER LES OPERATIONS ET/OU LES FAIRE SEULEMENT SI NECESSAIRE POUR LIMITER LE NOMBRE D'APPELS
 			
 			// on verifie si un train n'attend pas son entree en gare et on vide les trains qui ont besoin

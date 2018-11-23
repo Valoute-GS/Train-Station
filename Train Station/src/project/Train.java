@@ -1,15 +1,16 @@
 package project;
 
 import java.util.Queue;
+import java.util.Random;
 
 public class Train extends Thread{
-	public int id;
-	public int seats;
-	public int freeSeats;
-	public boolean flushed;
+	private int id;
+	private int seats;
+	private int freeSeats;
+	private boolean flushed;
 
-	public Station nextStation;
-	public Queue<Station> path;
+	private Station currentStation;
+	private Queue<Station> path;
 
 
 	public Train(int id,int seats, Queue<Station> path) {
@@ -17,13 +18,15 @@ public class Train extends Thread{
 		this.seats = seats;
 		this.freeSeats = seats;
 		this.path = path;
-		this.nextStation = this.path.poll();
+		this.currentStation = this.path.poll();
 		this.flushed = false;
 	}
 
 	@Override
 	public void run(){
 		System.out.println("I'm running and I an the Train : " + id);
+			
+		
 	}
 
 	public void leave(){
@@ -37,6 +40,10 @@ public class Train extends Thread{
 			return false;
 		}
 	}
+	
+	public boolean isOver(){
+		return path.isEmpty();
+	}
 
 	public void flush(){ //a l'arriv�e en gare 
 		if(!flushed){
@@ -44,8 +51,25 @@ public class Train extends Thread{
 			flushed = true;
 		}
 	}
+	
+	public boolean isFlushed(){ //a l'arriv�e en gare 
+		return flushed;
+	}
+	
+	public void setFlushed(boolean f){
+		flushed = f;
+	}
+	
+	
+	public void flushSomeRandom(){
+		if(!flushed){
+			int r = new Random().nextInt(seats-freeSeats-1);
+			freeSeats = r;
+			flushed = true;
+		}
+	}
 
-	public void freeSeat(){
+	public void freeOneSeat(){
 		if(seats>0){
 			freeSeats++;
 		}
@@ -53,16 +77,38 @@ public class Train extends Thread{
 
 	public void nextDestination() {
 		if(!path.isEmpty()) {
-			this.nextStation = path.poll();			
+			this.currentStation = path.poll();			
 		}
 	}
 
 	public String freeSeats(){
-		return "Train n�" + id + " -> " + this.freeSeats + "places restantes";
+		return "Train " + id + " -> " + this.freeSeats + "places restantes";
+	}
+	
+	public int getFreeSeats(){
+		return this.freeSeats;
 	}
 
 	public String toString(){
-		return "" + id;
+		String myPath = " | ";
+		for(Station s : path){
+			myPath +=  " --> " + s.getStationName();
+		}
+		
+		return "\n 	Train : " + this.id + " | " + (seats-freeSeats) + "/" + seats + myPath;
+	}
+	
+	public int getTrainId(){
+		return this.id;
+	}
+	
+	
+	public Station getCurrentStation(){
+		return this.currentStation;
+	}
+	
+	public Queue<Station> getPath(){
+		return this.path;
 	}
 
 }
