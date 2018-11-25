@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Station extends Thread {
+	// Attributes
 	private String name;
 	private int capacity; //max nb of trains at the same time
 
@@ -18,21 +19,21 @@ public class Station extends Thread {
 		queue = new LinkedList<>();
 	}
 
-	//ajoute un train en file d'attente
+	// Adding a train to queue
 	public void addTrainInQueue(Train t){
 		queue.add(t);
 	}
 
-	// l'ajoute sur un quai si il y en a un de dispo
-	// quand un train arrive en sur le quai on le flush
+	// Adding a train on a platform if ossible
+	// Then flushing it
 	private void managePlatform (){
 		for(int p = 0; p < capacity; p++){
-			// on ajoute un train au quai si possible
+			// adding train if ppossible
 			if(platforms[p] == null){
 				platforms[p] = queue.poll();	
 				
 			}
-			// On vide les trains a vider
+			// flushing concerned trains
 			if(platforms[p] != null && !platforms[p].isFlushed()){
 				platforms[p].flush();
 				
@@ -45,12 +46,12 @@ public class Station extends Thread {
 	}
 	
 	private void checkTrain(){
-		for(int p = 0; p < capacity; p++){ //on check chaque platform
+		for(int p = 0; p < capacity; p++){ //checking each platform
 			Train tmp = platforms[p];
 			if(tmp != null && tmp.isFlushed()){
-				if(tmp.getFreeSeats() == 0){ // si le train et plein il va a sa destination
+				if(tmp.getFreeSeats() == 0){ // if train is full then it go away to the next station
 
-					tmp.nextDestination(); // mise a jour de la prochaine destination
+					tmp.nextDestination(); // update path and destination
 					tmp.getCurrentStation().addTrainInQueue(tmp);
 					tmp.setFlushed(false);
 					platforms[p] = null;
@@ -81,7 +82,7 @@ public class Station extends Thread {
 		while(true){
 			Sleep.millis(10);
 			//System.out.println(this.toString());
-			// REGROUPER LES OPERATIONS ET/OU LES FAIRE SEULEMENT SI NECESSAIRE POUR LIMITER LE NOMBRE D'APPELS
+			// TODO REGROUPER LES OPERATIONS ET/OU LES FAIRE SEULEMENT SI NECESSAIRE POUR LIMITER LE NOMBRE D'APPELS
 			
 			// on verifie si un train n'attend pas son entree en gare et on vide les trains qui ont besoin
 			managePlatform();

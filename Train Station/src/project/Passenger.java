@@ -4,13 +4,16 @@ import java.time.Duration;
 import java.time.Instant;
 
 public class Passenger extends Thread{
+	// Current state
 	private final int NO_TICKET = 0;
 	private final int TICKETED = 1;
 	private final int READY_TO_EMBARK = 2;
-	private final int ON_BOARD = 3;
+	// not used yet ||| private final int ON_BOARD = 3;
 	
+	// Link to the network to communicate with
 	private Network n;
 
+	// Attributes
 	private int id;
 	private int state;
 	private Station location;
@@ -41,6 +44,7 @@ public class Passenger extends Thread{
 		return this.state;
 	}
 
+	// Timing gestion, and following a basic "life"
 	public void run(){
 		Instant now = Instant.now();
 		long delta;

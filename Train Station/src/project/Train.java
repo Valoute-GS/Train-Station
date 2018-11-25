@@ -4,6 +4,8 @@ import java.util.Queue;
 import java.util.Random;
 
 public class Train extends Thread{
+	
+	// Attributes
 	private int id;
 	private int seats;
 	private int freeSeats;
@@ -25,13 +27,10 @@ public class Train extends Thread{
 	@Override
 	public void run(){
 		System.out.println("I'm running and I an the Train : " + id);
-			
-		
+		//TODO timing gestion
 	}
-
-	public void leave(){
-	}
-
+	
+	
 	public boolean reserveSeat() {
 		if(freeSeats > 0) {
 			freeSeats--;
@@ -45,14 +44,14 @@ public class Train extends Thread{
 		return path.isEmpty();
 	}
 
-	public void flush(){ //a l'arriv�e en gare 
+	public void flush(){ 
 		if(!flushed){
 			freeSeats = seats;
 			flushed = true;
 		}
 	}
 	
-	public boolean isFlushed(){ //a l'arriv�e en gare 
+	public boolean isFlushed(){ 
 		return flushed;
 	}
 	

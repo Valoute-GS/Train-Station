@@ -20,12 +20,13 @@ public class TicketOffice extends Thread{
 
 	public void waitPassenger(Passenger p){
 		while(p.getPState() == 0){
-			Sleep.millis(1); //Sans ce sleep le programme stuck (probleme de thread ?)
+			Sleep.millis(1); // Without this sleep the program stucks (problem with thread ?)
 		}
 		return;
 	}
 
-
+	
+	// create valid passengers 
 	public void run(){
 		int i = 0;
 		while(true){

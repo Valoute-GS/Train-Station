@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Random;
 
 public class Network extends Thread{
-
+	
+	// attributes
 	private List<Station> stations;
 	private List<Train> trains;
 	private HashMap<KeyStations, Integer> durations;
@@ -14,11 +15,12 @@ public class Network extends Thread{
 	TicketOffice ticketOfficeB;
 	TicketOffice ticketOfficeC;
 
-	//base de donnee avec toutes les infos sur le reseau
 	public Network(){
+		// Data base and creation of everything + launching
 		stations = new LinkedList<>();
 		trains = new LinkedList<>();
 		durations = new HashMap<>();
+		
 		// Stations ===================================================
 		Station A = new Station("A", 4);
 		Station B = new Station("B", 2);
@@ -32,7 +34,7 @@ public class Network extends Thread{
 		B.start();
 		C.start();
 
-		// Trains path =================================================
+		// Train path =================================================
 		LinkedList<Station> p001 = new LinkedList<Station>();
 		p001.add(getStation("A"));
 		p001.add(getStation("B"));
@@ -59,7 +61,7 @@ public class Network extends Thread{
 		t002.start();
 		t003.start();
 
-		// Duree des trajets entre deux station ========================
+		// Durations ================== ========================
 		durations.put(new KeyStations(A, B), 10000);
 		durations.put(new KeyStations(B, A), 10000);
 
@@ -85,7 +87,8 @@ public class Network extends Thread{
 		A.addTrainInQueue(t003);
 	}
 
-	// Get une station random qui n'est pas celle sur laquelle l'appelant n'est pas
+	// Get a random station which is different than myLocation
+	// Avoid useless travellers from A to A
 	public Station randomDestination(Station myLocation) {
 		int r = new Random().nextInt(stations.size());
 		Station tmp = stations.get(r);
@@ -97,23 +100,26 @@ public class Network extends Thread{
 		return tmp;
 	}
 	
+	// Get a precise station
 	public Station getStation(String name){
 		for(Station s : stations){
 			if(s.getStationName() == name){
 				return s;
 			}
 		}
-		// si la station n'existe pas
+		// if does not exist
+		System.err.println("La station " + name + " n'existe pas");
 		return null;
 	}
-
+	
+	// Get a precise Train
 	public Train getTrain(int id){	
 		for(Train t : trains){
 			if(t.getTrainId() == id){
 				return t;
 			}
 		}
-		// si le train n'existe pas
+		// if does not exist
 		System.err.println("Le train " + id + " n'existe pas");
 		return null;
 	}
@@ -133,7 +139,7 @@ public class Network extends Thread{
 		return null;
 	}
 
-
+	// Displaying stations and trains informations to understand what's happening
 	public void run(){
 		while(true){
 			Sleep.millis(200);
@@ -144,6 +150,7 @@ public class Network extends Thread{
 
 	}
 
+	//small class to create a key which is a pair of two station
 	private class KeyStations{
 		@SuppressWarnings("unused")
 		private Station from;
