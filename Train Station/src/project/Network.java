@@ -83,7 +83,7 @@ public class Network extends Thread{
 		
 		Sleep.millis(100);
 		ticketOfficeA.start();
-		ticketOfficeAbis.start();
+		//ticketOfficeAbis.start();
 		ticketOfficeB.start();
 		ticketOfficeC.start();
 
