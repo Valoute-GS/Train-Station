@@ -11,7 +11,10 @@ public class Network extends Thread{
 	private List<Station> stations;
 	private List<Train> trains;
 	private HashMap<KeyStations, Integer> durations;
+
+	// TODO implement in list too
 	TicketOffice ticketOfficeA;
+	TicketOffice ticketOfficeAbis;
 	TicketOffice ticketOfficeB;
 	TicketOffice ticketOfficeC;
 
@@ -74,11 +77,13 @@ public class Network extends Thread{
 
 		// Ticket Office
 		ticketOfficeA = new TicketOffice(A, this);
+		ticketOfficeAbis = new TicketOffice(A, this);
 		ticketOfficeB = new TicketOffice(B, this);
 		ticketOfficeC = new TicketOffice(C, this);
 		
 		Sleep.millis(100);
 		ticketOfficeA.start();
+		ticketOfficeAbis.start();
 		ticketOfficeB.start();
 		ticketOfficeC.start();
 
